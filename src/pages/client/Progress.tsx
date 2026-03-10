@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase';
 import { usePageData } from '../../hooks';
 import { PageContainer, Header, BottomNav } from '../../components/layout';
 import { Card, ProgressBar, Button, Input } from '../../components/ui';
+import { ProgressPhotosSection } from '../../components/progress';
 import type { WeightHistory, DailyProgress } from '../../types/database';
 import { getBrasiliaDate } from '../../utils/date';
 import styles from './Progress.module.css';
@@ -584,6 +585,13 @@ export function Progress() {
             </Card>
           )}
         </section>
+
+        {clientId && (
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Meu Progresso Visual</h2>
+            <ProgressPhotosSection clientId={clientId} />
+          </section>
+        )}
 
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>Últimos 7 dias</h2>

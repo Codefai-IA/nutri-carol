@@ -6,7 +6,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { supabase } from '../../lib/supabase';
 import { PageContainer, Header, BottomNav } from '../../components/layout';
 import { Card, Button } from '../../components/ui';
-import { ProgressPhotosSection } from '../../components/progress';
+
 import type { WeightHistory } from '../../types/database';
 import { getBrasiliaDate } from '../../utils/date';
 import styles from './Profile.module.css';
@@ -408,12 +408,6 @@ export function Profile() {
               </div>
             </div>
           </Card>
-        </section>
-
-        {/* Progress Photos Section */}
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Meu Progresso Visual</h2>
-          <ProgressPhotosSection clientId={profile!.id} />
         </section>
 
         {profile?.goals && (

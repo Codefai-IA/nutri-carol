@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { ChevronDown, SlidersHorizontal, Columns2, Download, Share2, Camera } from 'lucide-react';
-import { BeforeAfterSlider } from '../ui';
+import { ChevronDown, Download, Share2, Camera } from 'lucide-react';
 import { generateComparisonImage, shareOrDownload } from '../../utils/imageUtils';
 import { useTheme } from '../../contexts/ThemeContext';
 import type { ProgressPhoto } from '../../types/database';
@@ -73,7 +72,6 @@ export function ComparisonView({
   const [afterMonth, setAfterMonth] = useState<string | null>(null);
   const [beforeType, setBeforeType] = useState<'front' | 'side' | 'back'>('front');
   const [afterType, setAfterType] = useState<'front' | 'side' | 'back'>('front');
-  const [viewMode, setViewMode] = useState<'slider' | 'side-by-side'>('slider');
   const [openDropdown, setOpenDropdown] = useState<'before' | 'after' | null>(null);
   const [saving, setSaving] = useState(false);
   const [beforeYear, setBeforeYear] = useState<number>(new Date().getFullYear());
@@ -209,24 +207,6 @@ export function ComparisonView({
 
   return (
     <div className={styles.container}>
-      {/* View mode toggle */}
-      <div className={styles.viewModeToggle}>
-        <button
-          className={`${styles.viewModeBtn} ${viewMode === 'slider' ? styles.viewModeBtnActive : ''}`}
-          onClick={() => setViewMode('slider')}
-        >
-          <SlidersHorizontal size={16} />
-          Slider
-        </button>
-        <button
-          className={`${styles.viewModeBtn} ${viewMode === 'side-by-side' ? styles.viewModeBtnActive : ''}`}
-          onClick={() => setViewMode('side-by-side')}
-        >
-          <Columns2 size={16} />
-          Lado a Lado
-        </button>
-      </div>
-
       {/* Month selector row */}
       <div className={styles.monthRow} ref={dropdownRef}>
         {/* Before month pill */}
@@ -391,31 +371,24 @@ export function ComparisonView({
       {/* Comparison display */}
       <div className={styles.comparisonArea}>
         {hasBothPhotos ? (
-          viewMode === 'slider' ? (
-            <BeforeAfterSlider
-              beforeImage={beforePhoto!.photo_url}
-              afterImage={afterPhoto!.photo_url}
-            />
-          ) : (
-            <div className={styles.sideBySide}>
-              <div className={styles.sideBySideItem}>
-                <img
-                  src={beforePhoto!.photo_url}
-                  alt="Antes"
-                  className={styles.sideBySideImage}
-                />
-                <span className={styles.sideBySideLabel}>ANTES</span>
-              </div>
-              <div className={styles.sideBySideItem}>
-                <img
-                  src={afterPhoto!.photo_url}
-                  alt="Depois"
-                  className={styles.sideBySideImage}
-                />
-                <span className={styles.sideBySideLabel}>DEPOIS</span>
-              </div>
+          <div className={styles.sideBySide}>
+            <div className={styles.sideBySideItem}>
+              <img
+                src={beforePhoto!.photo_url}
+                alt="Antes"
+                className={styles.sideBySideImage}
+              />
+              <span className={styles.sideBySideLabel}>ANTES</span>
             </div>
-          )
+            <div className={styles.sideBySideItem}>
+              <img
+                src={afterPhoto!.photo_url}
+                alt="Depois"
+                className={styles.sideBySideImage}
+              />
+              <span className={styles.sideBySideLabel}>DEPOIS</span>
+            </div>
+          </div>
         ) : (
           <div className={styles.emptyState}>
             {(!beforePhoto && beforeMonth && !monthsWithPhotos.has(beforeMonth)) ||

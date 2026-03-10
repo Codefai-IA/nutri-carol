@@ -9,12 +9,15 @@
   background: var(--bg-secondary);
 }
 
-.image {
-  display: block;
+.afterImage {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   pointer-events: none;
+  z-index: 1;
 }
 
 .beforeClip {
@@ -23,13 +26,17 @@
   left: 0;
   height: 100%;
   overflow: hidden;
+  z-index: 2;
 }
 
-.beforeClip .image {
+.beforeImage {
   position: absolute;
   top: 0;
   left: 0;
+  width: var(--container-width);
   height: 100%;
+  object-fit: cover;
+  pointer-events: none;
 }
 
 .label {
@@ -43,6 +50,7 @@
   font-weight: 700;
   letter-spacing: 1px;
   pointer-events: none;
+  z-index: 4;
 }
 
 .labelBefore {
@@ -63,6 +71,7 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  z-index: 3;
 }
 
 .line {

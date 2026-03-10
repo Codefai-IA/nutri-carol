@@ -15,8 +15,23 @@ export function BeforeAfterSlider({
   afterLabel = 'DEPOIS',
 }: BeforeAfterSliderProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
+  const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
+
+  // Track container width via ResizeObserver
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerWidth(entry.contentRect.width);
+      }
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
 
   const updatePosition = useCallback((clientX: number) => {
     const container = containerRef.current;
@@ -58,10 +73,10 @@ export function BeforeAfterSlider({
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-      style={{ touchAction: 'none' }}
+      style={{ touchAction: 'none', '--container-width': `${containerWidth}px` } as React.CSSProperties}
     >
       {/* After image (full background) */}
-      <img src={afterImage} alt={afterLabel} className={styles.image} />
+      <img src={afterImage} alt={afterLabel} className={styles.afterImage} />
 
       {/* Before image (clipped) */}
       <div
@@ -71,8 +86,7 @@ export function BeforeAfterSlider({
         <img
           src={beforeImage}
           alt={beforeLabel}
-          className={styles.image}
-          style={{ width: containerRef.current ? `${containerRef.current.offsetWidth}px` : '100vw' }}
+          className={styles.beforeImage}
         />
       </div>
 
